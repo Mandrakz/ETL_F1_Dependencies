@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="7"
-  DTS:VersionGUID="{E2CBDEAE-4161-45EA-9CBE-5EFB3FD0F134}">
+  DTS:VersionBuild="8"
+  DTS:VersionGUID="{326DAC99-724F-4001-983A-BEE13472FEA6}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -29,7 +29,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAC+mxf077sAkcJQyXz3Azxos4OoVC9+TXjK0NVDwCOnWgAAAAAOgAAAAAIAACAAAABnoxoP1URcPnvvvuK20cX5pohhKSpvBKcQvxSNlWY8+BAAAADUMsExlVK6YIYFGK3yv4qSQAAAALpQhi0syg5BdhWvTqbwckt4Rc4/Hr7fRPbIgt/DkGlYZhc8k2HHVSCXSDSiqkTuLxmaDtZqCZ+sTfK5saT6mgU</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAApaH29VJODNfNSg688iJibRqPD5leVFpHYNaeIiCSTOQAAAAAOgAAAAAIAACAAAAAJWq8rrtX0YCDY/0KgKr31eSWwNRWU/No/iw4Eh7xwcBAAAAB93N29ZYBg3znwMT6MlR3LQAAAAOVRgPZ3CZ4oxDxKKcWIf4sP6+sLg9bOYzeOiMrn5qXTIxi310JV3HQjVNe0AbNJhk0NEhtLhz936vq5ibT1qXw</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -46,7 +46,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABYPPbmIPgYXSktfNMfckeNodWQM42INiwTR2edthT3dAAAAAAOgAAAAAIAACAAAAAo+Mu/iMXJoL5mYAmdmo3nDaoyEfsFHS/hkqWjBqv/+BAAAACBKyFyl1jj157x5z2BVf3sQAAAAM6zt65VdvSK/rzQVmUYASjh6OpZpvPxbwzY4QxCIeOsD0YiCK7v7qW+Rih86GJ8lraDqDdg8ptwEPcXAaxd3W0</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACAjIKKY77PNsXFyeBMUmCPgUaQlpM2DCcxYLIoPSPPuQAAAAAOgAAAAAIAACAAAAAhVfcBcF44/E341lKp2frruItWaTfZorgQBOgcrvddyhAAAAAwx/M5rS+0otUGE7OI+qzGQAAAAN23J/7qB/O7KS7vp9ThroceMFEkl4Et5z+2hUPEpwZyOPOi4RoUvPFjoUsWxncPK0xVWLv172hNjz0Lj/tAnN4</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -67,7 +67,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{9B970B85-A932-4726-BEED-BEC3B42C034F}"
-          SQLTask:SqlStatementSource="if not exists(select * from sys.databases where name = 'dwF1_LapTimes') create database dwF1_LapTimes&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="if not exists(select * from sys.databases where name = 'dwF1_LapTimes') create database dwF1_LapTimes COLLATE Latin1_General_100_CI_AI_SC_UTF8;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
