@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="8"
-  DTS:VersionGUID="{326DAC99-724F-4001-983A-BEE13472FEA6}">
+  DTS:VersionBuild="9"
+  DTS:VersionGUID="{B0F8B676-E2CB-42D4-B5D6-6D6CE730B0D0}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -29,7 +29,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAApaH29VJODNfNSg688iJibRqPD5leVFpHYNaeIiCSTOQAAAAAOgAAAAAIAACAAAAAJWq8rrtX0YCDY/0KgKr31eSWwNRWU/No/iw4Eh7xwcBAAAAB93N29ZYBg3znwMT6MlR3LQAAAAOVRgPZ3CZ4oxDxKKcWIf4sP6+sLg9bOYzeOiMrn5qXTIxi310JV3HQjVNe0AbNJhk0NEhtLhz936vq5ibT1qXw</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAM9awS4/nKi8VPywM54ju98Y2B0qcgDNLm3e58S/NOZgAAAAAOgAAAAAIAACAAAACDaiRbeDcbdDbkAogsjkmUpm2EfWxLbNY61zuKS8AuCRAAAADARY9GOE1IxCZMkM8YEDP4QAAAAMkxbDdWYFendsHUck7EaRdBmt/soQ3h84U8p8zj6jUxPTtwPAN/Ke+WHba2MODxiCZUU+HS/5EZWRrdaO0cRXg</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -46,7 +46,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACAjIKKY77PNsXFyeBMUmCPgUaQlpM2DCcxYLIoPSPPuQAAAAAOgAAAAAIAACAAAAAhVfcBcF44/E341lKp2frruItWaTfZorgQBOgcrvddyhAAAAAwx/M5rS+0otUGE7OI+qzGQAAAAN23J/7qB/O7KS7vp9ThroceMFEkl4Et5z+2hUPEpwZyOPOi4RoUvPFjoUsWxncPK0xVWLv172hNjz0Lj/tAnN4</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAL9KDpdMQW+RTsnOLUhH6e6nHJY2bO0aykja1SUk3HhgAAAAAOgAAAAAIAACAAAACiP9YiSeqyMODjx13259WhxAC9dKtfk8m0uaaIOSE4IRAAAADXmHJ3W0Hub+BaLcEIxNhWQAAAAEaZv+lhkxnPL1vMWtxo1+vZmdVkLC4eLJiVfka4lQ8RHSfpD5cKXGv1rAZd+bFKWexFDjK+Q++ahZg4wui4fHI</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -101,7 +101,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{83FF590F-50DF-4F96-9F74-78C594EDBD50}"
-          SQLTask:SqlStatementSource="IF OBJECT_ID('[dwF1_LapTimes].[dbo].[fact_LapTime]') Is NOT NULL drop table [dwF1_LapTimes].[dbo].[fact_LapTime]&#xA;create table [dwF1_LapTimes].[dbo].[fact_LapTime](&#xA;&#xA;fact_LapTimes_id int identity(1,2) primary key,&#xA;&#xA;dim_raceid int&#xA;,dim_driverid int&#xA;,lap INT NOT NULL,&#xA;position INT NOT NULL,&#xA;time time(3)  NOT NULL,&#xA;milliseconds INT NOT NULL&#xA;&#xA;,race_date date&#xA;,seasons_year INT NOT NULL&#xA;,dim_constructorid int NOT NULL&#xA;,dim_circuitid int NOT NULL&#xA;);&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF OBJECT_ID('[dwF1_LapTimes].[dbo].[fact_LapTime]') Is NOT NULL drop table [dwF1_LapTimes].[dbo].[fact_LapTime]&#xA;create table [dwF1_LapTimes].[dbo].[fact_LapTime](&#xA;&#xA;fact_LapTimes_id int identity(1,1) primary key,&#xA;&#xA;dim_raceid int&#xA;,dim_driverid int&#xA;,lap INT NOT NULL,&#xA;position INT NOT NULL,&#xA;time time(3)  NOT NULL,&#xA;milliseconds INT NOT NULL&#xA;&#xA;,race_date date&#xA;,seasons_year INT NOT NULL&#xA;,dim_constructorid int NOT NULL&#xA;,dim_circuitid int NOT NULL&#xA;);&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -215,9 +215,25 @@
           Id="Package\Creation database F1 DW"
           TopLeft="229,101.5" />
         <NodeLayout
+          Size="217,42"
+          Id="Package\Creation Dimension_Drivers"
+          TopLeft="35,281" />
+        <NodeLayout
           Size="246,42"
           Id="Package\Creation of FACT table_LapTimes"
           TopLeft="69,206" />
+        <NodeLayout
+          Size="191,42"
+          Id="Package\Creation_Dim_Circuits"
+          TopLeft="20,490" />
+        <NodeLayout
+          Size="215,42"
+          Id="Package\Creation_Dim_Constructors"
+          TopLeft="3,572" />
+        <NodeLayout
+          Size="216,42"
+          Id="Package\Creation_Dimension_Races"
+          TopLeft="16,391" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="332,143.5">
@@ -252,10 +268,6 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="217,42"
-          Id="Package\Creation Dimension_Drivers"
-          TopLeft="35,281" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="192,248">
@@ -290,10 +302,6 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="216,42"
-          Id="Package\Creation_Dimension_Races"
-          TopLeft="16,391" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
           TopLeft="143.5,323">
@@ -328,10 +336,6 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="191,42"
-          Id="Package\Creation_Dim_Circuits"
-          TopLeft="20,490" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
           TopLeft="124,433">
@@ -366,10 +370,6 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="215,42"
-          Id="Package\Creation_Dim_Constructors"
-          TopLeft="3,572" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
           TopLeft="113,532">
