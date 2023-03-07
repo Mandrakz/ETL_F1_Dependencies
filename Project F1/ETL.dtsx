@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="201"
-  DTS:VersionGUID="{AD951443-20CA-43CB-92A6-0AD3A562F1E9}">
+  DTS:VersionBuild="204"
+  DTS:VersionGUID="{E0A1BC51-47CA-4698-B000-0DB15BB53CCC}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -221,7 +221,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADCKbjbpHKlXwrQ562jNXkY4700ZVgIBOnjAAJGVhn+YgAAAAAOgAAAAAIAACAAAAC7Ft5d3wkAnOjJR4prycO1nsCpqLhvmYc7bBzC+svFYxAAAACp2/gtpRO99ZqjCnqNlNlOQAAAAGp+sWtmcall1LXynhhUpfD9JqT4+2RF93qcMkIPr4pHylkT22O0lgxMeIHFuHq12ZMa3pQQ7J1qIoTtwO3q7+o</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAD0oHlxEnzmIOnvjdxdXOdEFbYS5CKBbc4a5dbO+AT26AAAAAAOgAAAAAIAACAAAAB1m+gOXXuGLELNMgz9dzTg81rOkiTk/1PLlOc40Tp32RAAAAC/yPNOKXccq0CLPRLXsI8sQAAAAI4ZvAmvbfAp7NDPBNATZibw4sBznDGnG8lGsxAK7iWyZUokRiz9KhHliBhnY+gH9Pi+JVIvf8haYk46TuQdfac</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -586,7 +586,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACtEdzaK+pC/p3SfBnZqjpwsrvSiZ8GPU9+8TY24CJQtwAAAAAOgAAAAAIAACAAAAD2ZqWqMVdy5sT7mQSfLiubHyoynv1QBHcURK3lQCmh8BAAAAA5ChqcfS+ZByvZ0S02h9M2QAAAAKrusWJNGjw9sQ41TIn1r8PonNKOy6hMoFWz1tVTTL3o921W9CmNnV2y1a2FFYqskEH+z8LID1O6Ap9+20wE+9Y</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACUszbrPFIcMLMstYmXBGx+VS1Kv8Xlwhg4Jy6liiSbIgAAAAAOgAAAAAIAACAAAAAUwajUs7vqhYwtLQyxnuObp2Q4IJowk8zwX0ReivZ5ehAAAACouvvulAQ3P90eFfAbJlbsQAAAAKXGKMysdrwEQK0LqFQeJKnfbSQ7P7sJDZBQMlmVBhuXjPst+OSRJXm6ZzqiIp1ConntHZAHWXuHBd+cVW3tMSI</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -3436,14 +3436,26 @@ ORDER BY driverId ASC, raceId,constructorId,circuitId,lap</property>
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT  [raceId]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH Result_TAB_drivers  AS
+(
+SELECT 
+		aux_results.resultId,
+		aux_results.raceId,
+		positionOrder,
+		aux_results.driverId,
+		drivers.forename,
+		drivers.surname
+  FROM [Test].[dbo].results as aux_results
+  INNER JOIN drivers ON drivers.driverId = aux_results.driverId) 
+  ,
+
+  Result_TAB_drivers_TAB_races AS
+(
+SELECT 
+		 aux_races.[raceId]
       ,[year]
       ,[round]
       ,[name]
-      ,[date]
-      ,[time]
-      ,[url]
       ,[fp1_date]
       ,[fp1_time]
       ,[fp2_date]
@@ -3454,9 +3466,24 @@ SELECT  [raceId]
       ,[quali_time]
       ,[sprint_date]
       ,[sprint_time]
-      ,[circuitId]
-  FROM [Test].[dbo].[races]
-WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</property>
+      ,aux_races.circuitId,
+		Result_TAB_drivers.forename,
+		Result_TAB_drivers.surname,
+		Result_TAB_drivers.positionOrder
+  FROM races as aux_races
+  INNER JOIN Result_TAB_drivers ON Result_TAB_drivers.raceId = aux_races.raceId)
+
+
+
+
+
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT  
+     *
+  FROM Result_TAB_drivers_TAB_races
+WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year
+AND positionOrder = 1
+ORDER BY round ASC</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -3492,17 +3519,6 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                   refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output]"
                   name="OLE DB Source Output">
                   <outputColumns>
-                    <outputColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[url]"
-                      codePage="65001"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[url]"
-                      length="255"
-                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[url]"
-                      name="url"
-                      truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[raceId]"
                       dataType="i4"
@@ -3540,24 +3556,6 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       length="50"
                       lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[name]"
                       name="name"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[date]"
-                      dataType="dbDate"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[date]"
-                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[date]"
-                      name="date"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[time]"
-                      dataType="dbTime2"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[time]"
-                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[time]"
-                      name="time"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[fp1_date]"
@@ -3658,15 +3656,40 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[circuitId]"
                       name="circuitId"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[forename]"
+                      codePage="65001"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[forename]"
+                      length="50"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[forename]"
+                      name="forename"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[surname]"
+                      codePage="65001"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[surname]"
+                      length="50"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[surname]"
+                      name="surname"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[positionOrder]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[positionOrder]"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[positionOrder]"
+                      name="positionOrder"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[url]"
-                      codePage="65001"
-                      dataType="str"
-                      length="255"
-                      name="url" />
                     <externalMetadataColumn
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[raceId]"
                       dataType="i4"
@@ -3685,14 +3708,6 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       dataType="str"
                       length="50"
                       name="name" />
-                    <externalMetadataColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[date]"
-                      dataType="dbDate"
-                      name="date" />
-                    <externalMetadataColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[time]"
-                      dataType="dbTime2"
-                      name="time" />
                     <externalMetadataColumn
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[fp1_date]"
                       dataType="dbDate"
@@ -3737,6 +3752,22 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[circuitId]"
                       dataType="i4"
                       name="circuitId" />
+                    <externalMetadataColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[forename]"
+                      codePage="65001"
+                      dataType="str"
+                      length="50"
+                      name="forename" />
+                    <externalMetadataColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[surname]"
+                      codePage="65001"
+                      dataType="str"
+                      length="50"
+                      name="surname" />
+                    <externalMetadataColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].ExternalColumns[positionOrder]"
+                      dataType="i4"
+                      name="positionOrder" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -3766,23 +3797,6 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       length="50"
                       lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[name]"
                       name="name" />
-                    <outputColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[date]"
-                      dataType="dbDate"
-                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[date]"
-                      name="date" />
-                    <outputColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[time]"
-                      dataType="dbTime2"
-                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[time]"
-                      name="time" />
-                    <outputColumn
-                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[url]"
-                      codePage="65001"
-                      dataType="str"
-                      length="255"
-                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[url]"
-                      name="url" />
                     <outputColumn
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[fp1_date]"
                       dataType="dbDate"
@@ -3838,6 +3852,25 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       dataType="i4"
                       lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[circuitId]"
                       name="circuitId" />
+                    <outputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[forename]"
+                      codePage="65001"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[forename]"
+                      name="forename" />
+                    <outputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[surname]"
+                      codePage="65001"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[surname]"
+                      name="surname" />
+                    <outputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[positionOrder]"
+                      dataType="i4"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[positionOrder]"
+                      name="positionOrder" />
                     <outputColumn
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -4013,6 +4046,28 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       cachedName="sprint_time"
                       externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[sprint_time]"
                       lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[sprint_time]" />
+                    <inputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].Columns[positionOrder]"
+                      cachedDataType="i4"
+                      cachedName="positionOrder"
+                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[positionOrder]"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[positionOrder]" />
+                    <inputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].Columns[forename]"
+                      cachedCodepage="65001"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="forename"
+                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[forename]"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[forename]" />
+                    <inputColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].Columns[surname]"
+                      cachedCodepage="65001"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="surname"
+                      externalMetadataColumnId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[surname]"
+                      lineageId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server1_Table_Races.Outputs[OLE DB Source Output].Columns[surname]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -4078,6 +4133,22 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
                       refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[sprint_time]"
                       dataType="dbTime2"
                       name="sprint_time" />
+                    <externalMetadataColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[positionOrder]"
+                      dataType="i4"
+                      name="positionOrder" />
+                    <externalMetadataColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[forename]"
+                      codePage="65001"
+                      dataType="str"
+                      length="50"
+                      name="forename" />
+                    <externalMetadataColumn
+                      refId="Package\Load_Races_Data_FromSV1_toSV2\DB_Server2_Table_Races.Inputs[OLE DB Destination Input].ExternalColumns[surname]"
+                      codePage="65001"
+                      dataType="str"
+                      length="50"
+                      name="surname" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -14361,51 +14432,51 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
           </EdgeLayout.Labels>
         </EdgeLayout>
         <NodeLayout
-          Size="130,93"
+          Size="258,51"
           Id="Package\Load_Drivers_Data_FromSV1_toSV2"
-          TopLeft="2029.78571428571,999.714285714285" />
+          TopLeft="1913.11904761905,1010.8253968254" />
         <NodeLayout
-          Size="144,102"
+          Size="302,69"
           Id="Package\Load_Constructors_Data_FromSV1_toSV2"
-          TopLeft="2547.46428571429,862.071428571428" />
+          TopLeft="2389.68650793651,895.404761904761" />
         <NodeLayout
-          Size="160,111"
+          Size="299,82"
           Id="Package\Load_Circuits_Data_FromSV1_toSV2"
-          TopLeft="2383.67857142857,972.642857142857" />
+          TopLeft="2195.90079365079,1000.42063492063" />
         <NodeLayout
-          Size="163,105"
+          Size="296,71"
           Id="Package\Load_Races_Data_FromSV1_toSV2"
-          TopLeft="2519.02380952381,690.261904761905" />
+          TopLeft="2385.69047619048,723.595238095238" />
         <NodeLayout
-          Size="130,99"
+          Size="278,78"
           Id="Package\Load_LapTimes_Data_FromSV1_toSV2"
-          TopLeft="2392.47619047619,530.333333333333" />
+          TopLeft="2244.69841269841,551.444444444444" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
           TopLeft="2104.5,786.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-9.71428571428623,213.214285714285"
+              EndConnector="-62.3809523809525,224.325396825396"
               Start="0,0"
-              End="-9.71428571428623,205.714285714285">
+              End="-62.3809523809525,216.825396825396">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,68.9987893462468" />
+                    End="0,72.8029324724238" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,68.9987893462468"
-                    Point2="0,72.9987893462468"
-                    Point3="-4,72.9987893462468" />
+                    Point1="0,72.8029324724238"
+                    Point2="0,76.8029324724238"
+                    Point3="-4,76.8029324724238" />
                   <mssgle:LineSegment
-                    End="-5.71428571428623,72.9987893462468" />
+                    End="-58.3809523809525,76.8029324724238" />
                   <mssgle:CubicBezierSegment
-                    Point1="-5.71428571428623,72.9987893462468"
-                    Point2="-9.71428571428623,72.9987893462468"
-                    Point3="-9.71428571428623,76.9987893462468" />
+                    Point1="-58.3809523809525,76.8029324724238"
+                    Point2="-62.3809523809525,76.8029324724238"
+                    Point3="-62.3809523809525,80.8029324724238" />
                   <mssgle:LineSegment
-                    End="-9.71428571428623,205.714285714285" />
+                    End="-62.3809523809525,216.825396825396" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -14420,26 +14491,26 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="312.678571428572,186.142857142857"
+              EndConnector="194.400793650794,213.920634920635"
               Start="0,0"
-              End="312.678571428572,178.642857142857">
+              End="194.400793650794,206.420634920635">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,89.0714285714286" />
+                    End="0,102.960317460317" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,89.0714285714286"
-                    Point2="0,93.0714285714286"
-                    Point3="4,93.0714285714286" />
+                    Point1="0,102.960317460317"
+                    Point2="0,106.960317460317"
+                    Point3="4,106.960317460317" />
                   <mssgle:LineSegment
-                    End="308.678571428572,93.0714285714286" />
+                    End="190.400793650794,106.960317460317" />
                   <mssgle:CubicBezierSegment
-                    Point1="308.678571428572,93.0714285714286"
-                    Point2="312.678571428572,93.0714285714286"
-                    Point3="312.678571428572,97.0714285714286" />
+                    Point1="190.400793650794,106.960317460317"
+                    Point2="194.400793650794,106.960317460317"
+                    Point3="194.400793650794,110.960317460317" />
                   <mssgle:LineSegment
-                    End="312.678571428572,178.642857142857" />
+                    End="194.400793650794,206.420634920635" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -14450,30 +14521,18 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="2248,765.5">
+          TopLeft="2248,762.297619047619">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="271.023809523809,-22.7380952380953"
+              EndConnector="137.690476190476,0"
               Start="0,0"
-              End="263.523809523809,-22.7380952380953">
+              End="130.190476190476,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="131.511904761905,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="131.511904761905,0"
-                    Point2="135.511904761905,0"
-                    Point3="135.511904761905,-4" />
-                  <mssgle:LineSegment
-                    End="135.511904761905,-18.7380952380953" />
-                  <mssgle:CubicBezierSegment
-                    Point1="135.511904761905,-18.7380952380953"
-                    Point2="135.511904761905,-22.7380952380953"
-                    Point3="139.511904761905,-22.7380952380953" />
-                  <mssgle:LineSegment
-                    End="263.523809523809,-22.7380952380953" />
+                    End="130.190476190476,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -14488,26 +14547,26 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="421.964285714286,75.571428571428"
+              EndConnector="343.186507936508,108.904761904761"
               Start="0,0"
-              End="421.964285714286,68.071428571428">
+              End="343.186507936508,101.404761904761">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,21.8736077481838" />
+                    End="0,33.2860371267149" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,21.8736077481838"
-                    Point2="0,25.8736077481838"
-                    Point3="4,25.8736077481838" />
+                    Point1="0,33.2860371267149"
+                    Point2="0,37.2860371267149"
+                    Point3="4,37.2860371267149" />
                   <mssgle:LineSegment
-                    End="417.964285714286,25.8736077481838" />
+                    End="339.186507936508,37.2860371267149" />
                   <mssgle:CubicBezierSegment
-                    Point1="417.964285714286,25.8736077481838"
-                    Point2="421.964285714286,25.8736077481838"
-                    Point3="421.964285714286,29.8736077481838" />
+                    Point1="339.186507936508,37.2860371267149"
+                    Point2="343.186507936508,37.2860371267149"
+                    Point3="343.186507936508,41.2860371267149" />
                   <mssgle:LineSegment
-                    End="421.964285714286,68.071428571428" />
+                    End="343.186507936508,101.404761904761" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -14522,26 +14581,26 @@ WHERE year IN (SELECT max(year)-1 from [Test].[dbo].[races] ) --Last year</prope
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="306.476190476191,-115.166666666667"
+              EndConnector="232.698412698413,-115.055555555556"
               Start="0,0"
-              End="306.476190476191,-107.666666666667">
+              End="232.698412698413,-107.555555555556">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,-53.5833333333333" />
+                    End="0,-53.5277777777778" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,-53.5833333333333"
-                    Point2="0,-57.5833333333333"
-                    Point3="4,-57.5833333333333" />
+                    Point1="0,-53.5277777777778"
+                    Point2="0,-57.5277777777778"
+                    Point3="4,-57.5277777777778" />
                   <mssgle:LineSegment
-                    End="302.476190476191,-57.5833333333333" />
+                    End="228.698412698413,-57.5277777777778" />
                   <mssgle:CubicBezierSegment
-                    Point1="302.476190476191,-57.5833333333333"
-                    Point2="306.476190476191,-57.5833333333333"
-                    Point3="306.476190476191,-61.5833333333333" />
+                    Point1="228.698412698413,-57.5277777777778"
+                    Point2="232.698412698413,-57.5277777777778"
+                    Point3="232.698412698413,-61.5277777777778" />
                   <mssgle:LineSegment
-                    End="306.476190476191,-107.666666666667" />
+                    End="232.698412698413,-107.555555555556" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
