@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="10"
-  DTS:VersionGUID="{229156DF-822C-431D-A394-508BF7520C4E}">
+  DTS:VersionBuild="15"
+  DTS:VersionGUID="{931F882B-6829-4F46-922B-B844EFDA1A62}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -25,11 +25,11 @@
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="1"
           DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=169.254.11.103,1433;User ID=CFVA;Provider=MSOLEDBSQL.1;Persist Security Info=True;Application Name=SSIS-Package1-{9B970B85-A932-4726-BEED-BEC3B42C034F}169.254.11.103,1433.CFVA;Auto Translate=False;">
+          DTS:ConnectionString="Data Source=169.254.11.103,1433;User ID=CFVA;Provider=MSOLEDBSQL.1;Persist Security Info=True;Auto Translate=False;Application Name=SSIS-Package1-{9B970B85-A932-4726-BEED-BEC3B42C034F}169.254.11.103,1433.CFVA;">
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACAvOhg/vPHU3T9x2chK89cexIfx4sqEFbpFXBm691FMgAAAAAOgAAAAAIAACAAAAAs1CoMs1QFm6sdINzJ+dNcni25MODD3gPVCWF0gx870xAAAADFESeOcTTIwvZxNc14/v4tQAAAAMc9UCHnRYzbfFVXWiHH/qMNonFbonDJBaMbI1qWlUtStpMo0ajLcVCHI4lB/kXdVavZzPClbrkWHanjVAxf5Qk</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAHVQwbxWYk0+JzdXkYz5L8gAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAsYpzE8oexz1vAIQ8fPQS0pQ2OdH/kjw4qW6pIW+Uw2wAAAAAOgAAAAAIAACAAAAA0PUNn0wGPX/f5SA+m6rBuzMkXz6kCGXDIRg7twzRnRBAAAACEKUfZKomyU5qKogXi3goXQAAAAJof9AV35l+1jpv8sYyvGLL6mZpgtKmN0xZAmZJCaRn2RpbhvQtqi2R4Xn7438Yw6sX2ac0PjZ2bPSrvGneOMVY</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -42,11 +42,11 @@
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="1"
           DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=169.254.11.103,1433;User ID=CFVA;Initial Catalog=dwF1_LapTimes;Provider=MSOLEDBSQL.1;Persist Security Info=True;Application Name=SSIS-Package1-{83FF590F-50DF-4F96-9F74-78C594EDBD50}169.254.11.103,1433.dwF1_LapTimes.CFVA;Auto Translate=False;">
+          DTS:ConnectionString="Data Source=169.254.11.103,1433;User ID=CFVA;Initial Catalog=dwF1_LapTimes;Provider=MSOLEDBSQL.1;Persist Security Info=True;Auto Translate=False;Application Name=SSIS-Package1-{83FF590F-50DF-4F96-9F74-78C594EDBD50}169.254.11.103,1433.dwF1_LapTimes.CFVA;">
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACkrv6dAHF0q9EESD7rVYHQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAA1qP9luvDzNlhDhEnLh6/MXKlvEsqzqLJPLUVDPwNdrQAAAAAOgAAAAAIAACAAAADuzWviEvTPiJ2k+DVGkrF/CTGiea02cYKiZ4a9swblpBAAAAAlDqywz6NN55pAB5n5tqIFQAAAABP7KwT5qpP1i4Eh/6Phzd9viANNqXjyrpHGks8NMmUgRYJeTgMJXjum9BEfAXTIs75ObXX2/T6QuxQQm81+MKs</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAHVQwbxWYk0+JzdXkYz5L8gAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABPJXBSEGJhtkEX4Kh4q3QZ1ix9TV+N2n1FHnNtlvYwXgAAAAAOgAAAAAIAACAAAABKlWpTkg2S10enKTFdib/wjwZsnguCrNmKURW4m1UJPBAAAADIzflu2M6lr9064iA3+zSIQAAAAD1APVyfboUsTwB3npy7O0ZZze3YrXgMk5yrEb42JfdchQ2ZwlaCYXReVRVUdvLL3wArXDYSH0EUgvmoeVDvghg</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -118,7 +118,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{83FF590F-50DF-4F96-9F74-78C594EDBD50}"
-          SQLTask:SqlStatementSource="IF OBJECT_ID('[dwF1_LapTimes].[dbo].[dim_races]') Is NOT NULL drop table [dwF1_LapTimes].[dbo].[dim_races]&#xA;create table [dwF1_LapTimes].[dbo].[dim_races](&#xA;&#xA;dim_raceId int identity(1,1) primary key,&#xA;raceId INT NOT NULL ,&#xA;year INT NOT NULL,&#xA;round INT NOT NULL,&#xA;name VARCHAR(50) NOT NULL,&#xA;fp1_date DATE,&#xA;fp1_time time(0),&#xA;fp2_date DATE,&#xA;fp2_time time(0),&#xA;fp3_date DATE,&#xA;fp3_time time(0),&#xA;quali_date DATE,&#xA;quali_time time(0),&#xA;sprint_date DATE,&#xA;sprint_time time(0),&#xA;positionOrder INT NOT NULL,&#xA;forename VARCHAR(50) NOT NULL,&#xA;surname VARCHAR(50) NOT NULL&#xA;&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF OBJECT_ID('[dwF1_LapTimes].[dbo].[dim_races]') Is NOT NULL drop table [dwF1_LapTimes].[dbo].[dim_races]&#xA;create table [dwF1_LapTimes].[dbo].[dim_races](&#xA;&#xA;dim_raceId int identity(1,1) primary key,&#xA;raceId INT NOT NULL ,&#xA;year INT NOT NULL,&#xA;round INT NOT NULL,&#xA;name VARCHAR(50) NOT NULL,&#xA;fp1_date DATE,&#xA;fp1_time time(0),&#xA;fp2_date DATE,&#xA;fp2_time time(0),&#xA;fp3_date DATE,&#xA;fp3_time time(0),&#xA;quali_date DATE,&#xA;quali_time time(0),&#xA;sprint_date DATE,&#xA;sprint_time time(0),&#xA;Winner_forename VARCHAR(50) NOT NULL,&#xA;Winner_Surname VARCHAR(50) NOT NULL,&#xA;WinnerID  INT NOT NULL ,&#xA;ID_Winner_Constructor INT NOT NULL&#xA;&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
